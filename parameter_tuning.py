@@ -47,14 +47,15 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
   ptsne = PTSNE(
     [n_input_dimensions],
     get_feed_forward_network_builder(vptsne_layers, batch_normalization=False),
-    perplexity=perplexity)
+    perplexity=perplexity,
+    learning_rate=0.00033)
 
   def get_logger(loss_file, trustworthiness_file, knn_file):
     def log_fn(args):
       if isinstance(args[0], VAE):
         return
       loss_file.write(str(args[2]) + "\n")
-      if args[1] % 10 == 0:
+      if args[1] % 50 == 0:
         transformed_train = args[0].transform(mnist.train._images)
         transformed_test = args[0].transform(mnist.test._images)
         trustworthiness_file.write(str(
@@ -69,7 +70,7 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
     "n_iters": 1500,
     "batch_size": batch_size,
     "fit_vae": True,
-    "n_vae_epochs": 200,
+    "n_vae_iters": 10000,
     "vae_batch_size": 1000}
 
   vptsne_log_files = [open("output/%s_vptsne_%s.log" % (to_log, info), "w") for to_log in ["loss", "trustworthiness", "knn"]]
@@ -88,8 +89,8 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
 
 if __name__ == "__main__":
   for perplexity in [30]:
-    for n_latent_dimensions in [4, 3, 2]:
-      for batch_size in [200, 400, 800]:
-        for run_id in range(10):
+    for n_latent_dimensions in [3]:
+      for batch_size in [200, 400, 800, 1600]:
+        for run_id in range(30):
           run_training(n_latent_dimensions, perplexity, batch_size, run_id)
 

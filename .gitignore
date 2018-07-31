@@ -121,6 +121,7 @@ tags
 
 # Data
 MNIST_data/
+FASHION_MNIST_data/
 
 # Tensorflow models
 /models/
