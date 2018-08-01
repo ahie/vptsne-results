@@ -73,8 +73,8 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
     "n_vae_iters": 10000,
     "vae_batch_size": 1000}
 
-  vptsne_log_files = [open("output/%s_vptsne_%s.log" % (to_log, info), "w") for to_log in ["loss", "trustworthiness", "knn"]]
-  ptsne_log_files = [open("output/%s_ptsne_%s.log" % (to_log, info), "w") for to_log in ["loss", "trustworthiness", "knn"]]
+  vptsne_log_files = [open("parameter_tuning_output/%s_vptsne_%s.log" % (to_log, info), "w") for to_log in ["loss", "trustworthiness", "knn"]]
+  ptsne_log_files = [open("parameter_tunin_output/%s_ptsne_%s.log" % (to_log, info), "w") for to_log in ["loss", "trustworthiness", "knn"]]
 
   vptsne.fit(mnist.train._images, hook_fn=get_logger(*vptsne_log_files), **fit_params)
   ptsne.fit(mnist.train._images, hook_fn=get_logger(*ptsne_log_files), **fit_params)

@@ -89,12 +89,12 @@ if __name__ == "__main__":
           break
         except:
           pass
-      with open("logs/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[0]) + "\n")
-      with open("logs/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[1]) + "\n")
-      with open("logs/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[2]) + "\n")
-      with open("logs/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[3]) + "\n")
 
