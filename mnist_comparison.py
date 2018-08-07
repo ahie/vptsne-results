@@ -4,6 +4,7 @@ import tensorflow.distributions as tfds
 import matplotlib.pyplot as plt
 from vptsne import (VAE, PTSNE, VPTSNE)
 from vptsne.helpers import *
+from common import *
 from sklearn.decomposition import PCA
 from sklearn.manifold.t_sne import trustworthiness
 from sklearn.neighbors import KNeighborsClassifier as KNC
@@ -16,13 +17,6 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=False)
 n_input_dimensions = mnist.train._images.shape[1]
 n_latent_dimensions = 2
 
-vae_layer_definitions = [
-  (256, tf.nn.relu),
-  (128, tf.nn.relu),
-  (32, tf.nn.relu)]
-vae_encoder_layers = LayerDefinition.from_array(vae_layer_definitions)
-vae_decoder_layers = LayerDefinition.from_array(reversed(vae_layer_definitions))
-
 vae = VAE(
   [n_input_dimensions],
   get_gaussian_network_builder(vae_encoder_layers, n_latent_dimensions),
@@ -33,11 +27,6 @@ vae = VAE(
   get_bernoulli_network_builder(vae_decoder_layers, n_input_dimensions),
   bernoulli_supplier,
   beta=1.0)
-
-vptsne_layers = LayerDefinition.from_array([
-  (250, tf.nn.relu),
-  (2500, tf.nn.relu),
-  (2, None)])
 
 vptsne = VPTSNE(
   vae,

@@ -5,6 +5,7 @@ import tensorflow.distributions as tfds
 import matplotlib.pyplot as plt
 from vptsne import (VAE, PTSNE, VPTSNE)
 from vptsne.helpers import *
+from common import *
 from umap import UMAP
 from sklearn.decomposition import PCA
 from sklearn.manifold.t_sne import trustworthiness
@@ -29,13 +30,6 @@ subset_b_indices = indices[70000:]
 n_input_dimensions = levine_data.shape[1]
 n_latent_dimensions = 2
 
-vae_layer_definitions = [
-  (256, tf.nn.relu),
-  (128, tf.nn.relu),
-  (32, tf.nn.relu)]
-vae_encoder_layers = LayerDefinition.from_array(vae_layer_definitions)
-vae_decoder_layers = LayerDefinition.from_array(reversed(vae_layer_definitions))
-
 vae = VAE(
   [n_input_dimensions],
   get_gaussian_network_builder(vae_encoder_layers, n_latent_dimensions),
@@ -43,12 +37,6 @@ vae = VAE(
   gaussian_supplier,
   get_gaussian_network_builder(vae_decoder_layers, n_input_dimensions, constant_sigma=0.1),
   gaussian_supplier)
-
-vptsne_layers = LayerDefinition.from_array([
-  (200, tf.nn.relu),
-  (200, tf.nn.relu),
-  (2000, tf.nn.relu),
-  (2, None)])
 
 fit_params = {
   "n_iters": 1500,
@@ -72,14 +60,14 @@ pca = PCA(n_components=2)
 umap = UMAP(n_components=2)
 tsne = TSNE(n_components=2, perplexity=30)
 
-estimators = [vptsne, ptsne, vae]#, pca, umap, tsne]
+estimators = [vptsne, ptsne, vae, pca, umap, tsne]
 
 def fit_transform_fn(estimator):
   print("Running fit_transform with estimator", estimator.__class__.__name__)
   start = curr_millis()
   if isinstance(estimator, PTSNE):
     transformed = estimator.fit_transform(levine_data, **fit_params)
-  if isinstance(estimator, VAE): # Already trained
+  if isinstance(estimator, VAE): # Already fitted
     transformed = estimator.transform(levine_data)
   else:
     transformed = estimator.fit_transform(levine_data)

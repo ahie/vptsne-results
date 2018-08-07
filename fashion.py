@@ -58,13 +58,6 @@ def decoder_network_builder(vae, z):
     "output": z,
     "probs": hidden_5}
 
-vae_layer_definitions = [
-  (2000, tf.nn.relu),
-  (2000, tf.nn.relu),
-  (32, tf.nn.relu)]
-vae_encoder_layers = LayerDefinition.from_array(vae_layer_definitions)
-vae_decoder_layers = LayerDefinition.from_array(reversed(vae_layer_definitions))
-
 if True:
   vae = VAE(
     [784],
@@ -82,12 +75,6 @@ else:
     decoder_network_builder,
     bernoulli_supplier,
     learning_rate=0.00001)
-
-vptsne_layers = LayerDefinition.from_array([
-  (200, tf.nn.relu),
-  (200, tf.nn.relu),
-  (2000, tf.nn.relu),
-  (2, None)])
 
 fit_params = {
   "hook_fn": print,

@@ -5,8 +5,8 @@ for j = 1:length(plt_types)
   for batch_size = [200, 400]
     for i = 1:20
       s = "_3_30_" + string(batch_size) + "_" + string(i) + ".log";
-      ptsne_data(:,i) = movavg(fscanf(fopen("parameter_tuning_output/" + plt_types(j) + "_ptsne" + s, 'r'), '%f', 30), 'e', 1); 
-      vptsne_data(:,i) = movavg(fscanf(fopen("parameter_tuning_output/" + plt_types(j) + "_vptsne" + s, 'r'), '%f', 30), 'e', 1); 
+      ptsne_data(:,i) = fscanf(fopen("parameter_tuning_output/" + plt_types(j) + "_ptsne" + s, 'r'), '%f', 30);
+      vptsne_data(:,i) = fscanf(fopen("parameter_tuning_output/" + plt_types(j) + "_vptsne" + s, 'r'), '%f', 30);
     end 
     subplot(120 + j)
     hold on
