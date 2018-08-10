@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import fashion_mnist
 from vptsne import (VAE, PTSNE, VPTSNE)
 from vptsne.helpers import *
+from common import *
 from umap import UMAP
 from sklearn.decomposition import PCA
 from sklearn.manifold.t_sne import trustworthiness
@@ -78,7 +79,7 @@ else:
 
 fit_params = {
   "hook_fn": print,
-  "n_iters": 1500,
+  "n_iters": 1,
   "batch_size": 500,
   "deterministic": True,
   "fit_vae": False,
@@ -142,8 +143,16 @@ print(
 
 for i, transformed in enumerate(transformed_all):
   plt.clf()
+  legend_handles = []
+  legend_labels = []
+  label_strings = ["T-shirt / top", "Trouser", "Pullover", "Dress", "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
+  print(np.unique(fashion_labels))
   for label in np.unique(fashion_labels):
     tmp = transformed[fashion_labels == label]
-    plt.scatter(tmp[:, 0], tmp[:, 1], s=0.05, c=color_palette[label])
+    h = plt.scatter(tmp[:, 0], tmp[:, 1], c=color_palette[label])
+    legend_handles.append(h)
+    legend_labels.append(label_strings[label])
+  plt.legend(legend_handles, legend_labels, loc='lower left', bbox_to_anchor=(0,1.02,-0.5,0.2), ncol=5)
+#  plt.title("VPTSNE")
   plt.show()
 

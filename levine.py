@@ -49,16 +49,16 @@ fit_params = {
 vptsne = VPTSNE(
   vae,
   get_feed_forward_network_builder(vptsne_layers, batch_normalization=False),
-  perplexity=30)
+  perplexity=10)
 
 ptsne = PTSNE(
   [n_input_dimensions],
   get_feed_forward_network_builder(vptsne_layers, batch_normalization=False),
-  perplexity=30)
+  perplexity=10)
 
 pca = PCA(n_components=2)
 umap = UMAP(n_components=2)
-tsne = TSNE(n_components=2, perplexity=30)
+tsne = TSNE(n_components=2, perplexity=10)
 
 estimators = [vptsne, ptsne, vae, pca, umap, tsne]
 

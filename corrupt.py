@@ -81,8 +81,8 @@ def run_training(corruption_chance, perplexity, batch_size, run_id):
   return knn_score, tw, knn_score_vptsne, tw_vptsne
 
 if __name__ == "__main__":
-  for corruption_chance in [0.3, 0.2, 0.4, 0.5, 0.1]:
-    for run_id in range(5):
+  for corruption_chance in [0.2, 0.3, 0.4]:
+    for run_id in range(10):
       res = run_training(corruption_chance, 30, 200, run_id)
       with open("corrupted_output/ptsne_knn_%s.log" % corruption_chance, "a") as f:
         f.write(str(res[0]) + "\n")
