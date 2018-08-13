@@ -2,7 +2,6 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.distributions as tfds
 import matplotlib.pyplot as plt
-import mnist
 from vptsne import (VAE, PTSNE, VPTSNE)
 from vptsne.helpers import *
 from common import *
@@ -11,10 +10,6 @@ from sklearn.manifold.t_sne import trustworthiness
 from sklearn.neighbors import KNeighborsClassifier as KNC
 from tensorflow.examples.tutorials.mnist import input_data
 
-np.random.seed(0)
-color_palette = np.random.rand(100, 3)
-mnist_train_images, mnist_train_labels = mnist.train_images().reshape(60000, 784) / 255, mnist.train_labels()
-mnist_test_images, mnist_test_labels = mnist.test_images().reshape(10000, 784) / 255, mnist.test_labels()
 n_input_dimensions = mnist_train_images.shape[1]
 
 def run_training(n_latent_dimensions, perplexity, batch_size, run_id):

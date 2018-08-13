@@ -22,7 +22,7 @@ data, labels = hdata.load_all("CYTOMETRY_data")
 print(data.shape, labels.shape)
 
 indices = np.random.permutation(data.shape[0])
-number_of_points = int(data.shape[0] * 0.5)
+number_of_points = int(data.shape[0] * 0.01)
 subset_indices = indices[:number_of_points]
 
 n_input_dimensions = data.shape[1]
@@ -43,7 +43,7 @@ fit_params = {
   "deterministic": True,
   "fit_vae": True,
   "n_vae_iters": 20000,
-  "vae_batch_size": 1000}
+  "vae_batch_size": 10000}
 
 vptsne = VPTSNE(
   vae,
