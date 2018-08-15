@@ -1,4 +1,10 @@
 import numpy as np
+  
+marker_order = [
+  "CD90", "CD8", "Ki-67", "CD44", "MUC1", "CD147", "E-CADH",
+  "Cleaved-PARP", "N-CADH", "pS6", "CD117", "CA125", "CD166", "Sox2", "EpCAM",
+  "ALDH", "CD45", "pAkt", "CD3", "PDL-1", "CD24", "pERK1-2", "PDL-2", "HE4", "PD1", "CD133"
+]
 
 def prep_holdout(data, labels, keep_percentage, folder, filename_prefix):
   to_shuffle = list(zip(data, labels))
@@ -48,7 +54,7 @@ def read_hdata(files, marker_order):
 
   return all_data, all_labels
 
-def load_all(data_folder):
+def load_all(data_folder="CYTOMETRY_data/"):
   all_files = [
     "%s/H011_r2Asc_log.csv", #  0
     "%s/H024_rAsc2_log.csv", #  1
@@ -61,7 +67,7 @@ def load_all(data_folder):
     "%s/H094_iMes1_log.csv", #  8
     "%s/H094_pAsc1_log.csv", #  9
 #   "%s/H100p_asc_log.csv",  #  10
-    "%s/H116_pAsc_log.csv",  #  11
+#    "%s/H116_pAsc_log.csv",  #  11
     "%s/H116_pOme_log.csv",  #  12
     "%s/H122_pAsc1_log.csv", #  13
     "%s/H131_iAsc1_log.csv", #  14
@@ -71,12 +77,9 @@ def load_all(data_folder):
     "%s/OC023_r2Asc_log.csv" #  18
   ]
   all_files = [file_path % data_folder for file_path in all_files]
-  
-  marker_order = [
-    "CD90", "CD8", "Ki-67", "CD44", "MUC1", "CD147", "E-CADH",
-    "Cleaved-PARP", "N-CADH", "pS6", "CD117", "CA125", "CD166", "Sox2", "EpCAM",
-    "ALDH", "CD45", "pAkt", "CD3", "PDL-1", "CD24", "pERK1-2", "PDL-2", "HE4", "PD1", "CD133"
-  ]
-
   return read_hdata(all_files, marker_order)
+
+def load_files(file_names, data_folder="CYTOMETRY_data/"):
+  file_paths = [data_folder + file_name for file_name in file_names]
+  return read_hdata(file_paths, marker_order)
 

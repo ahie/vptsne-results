@@ -15,6 +15,7 @@ n_input_dimensions = train_data.shape[1]
 n_latent_dimensions = 5
 
 non_corrupted_train_data = np.copy(train_data)
+non_corrupted_test_data = np.copy(test_data)
 
 best = {"ptsne": 0, "vptsne": 0}
 
@@ -32,9 +33,10 @@ def save_best(identifier, score, transformed):
 
 def run_training(corruption_chance, perplexity, batch_size, run_id):
 
-  global train_data
+  global train_data, test_data
   corrupt = lambda x: 0 if np.random.uniform() <= corruption_chance else x
   train_data = np.vectorize(corrupt)(train_data)
+  test_data = np.vectorize(corrupt)(test_data)
 
   vae = VAE(
     [n_input_dimensions],
@@ -77,12 +79,13 @@ def run_training(corruption_chance, perplexity, batch_size, run_id):
   save_best("vptsne", knn_score_vptsne, vptsne.transform(non_corrupted_train_data))
 
   train_data = np.copy(non_corrupted_train_data)
+  test_data = np.copy(non_corrupted_test_data)
 
   return knn_score, tw, knn_score_vptsne, tw_vptsne
 
 if __name__ == "__main__":
   for corruption_chance in [0.2, 0.3, 0.4]:
-    for run_id in range(10):
+    for run_id in range(3):
       res = run_training(corruption_chance, 30, 200, run_id)
       with open("corrupted_output/ptsne_knn_%s.log" % corruption_chance, "a") as f:
         f.write(str(res[0]) + "\n")

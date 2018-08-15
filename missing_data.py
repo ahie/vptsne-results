@@ -57,16 +57,14 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
     "batch_size": batch_size,
     "deterministic": True,
     "fit_vae": True,
-    "n_vae_iters": 7500,
-    "vae_batch_size": 600}
+    "n_vae_iters": 10000,
+    "vae_batch_size": 1000}
   fit_params_2 = {
     "hook_fn": hook,
     "n_iters": 1500,
     "batch_size": batch_size,
     "deterministic": False,
-    "fit_vae": False,
-    "n_vae_iters": 7500,
-    "vae_batch_size": 600}
+    "fit_vae": False}
 
   vptsne.fit(train_data, **fit_params)
   vptsne_knn_score = KNC(n_neighbors=1).fit(vptsne.transform(train_data), train_labels).score(vptsne.transform(test_data), test_labels)
@@ -86,7 +84,7 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
   return vptsne_knn_score, ptsne_knn_score, vptsne_trustworthiness, ptsne_trustworthiness, vptsne2_knn_score, vptsne2_trustworthiness
 
 if __name__ == "__main__":
-  for percent_missing in [0.99, 0.8, 0.9]:#0.5, 0.6, 0.3, 0.2, 0.7, 0.95, 0.4, 0.99]:
+  for percent_missing in [0.8, 0.9]:#0.5, 0.6, 0.3, 0.2, 0.7, 0.95, 0.4, 0.99]:
     for run_id in range(20):
       while True:
         try:
@@ -94,16 +92,16 @@ if __name__ == "__main__":
           break
         except:
           pass
-      with open("missing_data_output_2/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[0]) + "\n")
-      with open("missing_data_output_2/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[1]) + "\n")
-      with open("missing_data_output_2/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[2]) + "\n")
-      with open("missing_data_output_2/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[3]) + "\n")
-      with open("missing_data_output_2/vptsne2_subset_knn_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/vptsne2_subset_knn_%s.log" % percent_missing, "a") as f:
         f.write(str(res[4]) + "\n")
-      with open("missing_data_output_2/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_3/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[5]) + "\n")
 
