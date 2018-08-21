@@ -42,8 +42,8 @@ fit_params = {
   "batch_size": 5000,
   "deterministic": True,
   "fit_vae": True,
-  "n_vae_iters": 20000,
-  "vae_batch_size": 10000}
+  "n_vae_iters": 10000,
+  "vae_batch_size": 1000}
 
 vptsne = VPTSNE(
   vae,

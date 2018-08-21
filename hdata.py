@@ -1,7 +1,10 @@
 import numpy as np
   
 marker_order = [
-  "CD90", "CD8", "Ki-67", "CD44", "MUC1", "CD147", "E-CADH",
+  #                   "CD44",
+  #                      |
+  #                      v
+  "CD90", "CD8", "Ki-67", "MUC1", "CD147", "E-CADH",
   "Cleaved-PARP", "N-CADH", "pS6", "CD117", "CA125", "CD166", "Sox2", "EpCAM",
   "ALDH", "CD45", "pAkt", "CD3", "PDL-1", "CD24", "pERK1-2", "PDL-2", "HE4", "PD1", "CD133"
 ]
@@ -66,14 +69,14 @@ def load_all(data_folder="CYTOMETRY_data/"):
     "%s/H094_iAsc1_log.csv", #  7
     "%s/H094_iMes1_log.csv", #  8
     "%s/H094_pAsc1_log.csv", #  9
-#   "%s/H100p_asc_log.csv",  #  10
-#    "%s/H116_pAsc_log.csv",  #  11
+    "%s/H100p_asc_log.csv",  #  10
+    "%s/H116_pAsc_log.csv",  #  11
     "%s/H116_pOme_log.csv",  #  12
     "%s/H122_pAsc1_log.csv", #  13
     "%s/H131_iAsc1_log.csv", #  14
     "%s/H131_pAsc1_log.csv", #  15
     "%s/M087_rAsc_log.csv",  #  16
-#   "%s/OC005_r4Asc_log.csv",#  17
+    "%s/OC005_r4Asc_log.csv",#  17
     "%s/OC023_r2Asc_log.csv" #  18
   ]
   all_files = [file_path % data_folder for file_path in all_files]

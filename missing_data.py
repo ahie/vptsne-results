@@ -84,24 +84,24 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
   return vptsne_knn_score, ptsne_knn_score, vptsne_trustworthiness, ptsne_trustworthiness, vptsne2_knn_score, vptsne2_trustworthiness
 
 if __name__ == "__main__":
-  for percent_missing in [0.8, 0.9]:#0.5, 0.6, 0.3, 0.2, 0.7, 0.95, 0.4, 0.99]:
-    for run_id in range(20):
+  for percent_missing in [0.8, 0.9, 0.7, 0.6]:#0.5, 0.6, 0.3, 0.2, 0.7, 0.95, 0.4, 0.99]:
+    for run_id in range(5):
       while True:
         try:
-          res = run_training(50, 30, 600, percent_missing, run_id)
+          res = run_training(3, 30, 200, percent_missing, run_id)
           break
         except:
           pass
-      with open("missing_data_output_3/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[0]) + "\n")
-      with open("missing_data_output_3/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
         f.write(str(res[1]) + "\n")
-      with open("missing_data_output_3/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[2]) + "\n")
-      with open("missing_data_output_3/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[3]) + "\n")
-      with open("missing_data_output_3/vptsne2_subset_knn_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/vptsne2_subset_knn_%s.log" % percent_missing, "a") as f:
         f.write(str(res[4]) + "\n")
-      with open("missing_data_output_3/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      with open("missing_data_output_5/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
         f.write(str(res[5]) + "\n")
 

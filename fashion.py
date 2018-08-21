@@ -80,10 +80,10 @@ else:
 fit_params = {
   "hook_fn": print,
   "n_iters": 1,
-  "batch_size": 500,
+  "batch_size": 1000,
   "deterministic": True,
   "fit_vae": False,
-  "n_vae_iters": 5000,
+  "n_vae_iters": 10000,
   "vae_batch_size": 100}
 
 def disp(n):
