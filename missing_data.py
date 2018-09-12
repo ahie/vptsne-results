@@ -16,7 +16,7 @@ mnist_train_images, mnist_train_labels = mnist.train_images().reshape(60000, 784
 mnist_test_images, mnist_test_labels = mnist.test_images().reshape(10000, 784) / 255, mnist.test_labels()
 n_input_dimensions = mnist_train_images.shape[1]
 
-def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, run_id):
+def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing):
 
   data_points = mnist_train_images.shape[0]
   indices = np.random.choice(data_points, int(data_points * (1 - percent_missing)), replace=False)
@@ -30,7 +30,7 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
     get_gaussian_network_builder(vae_encoder_layers, n_latent_dimensions),
     gaussian_prior_supplier,
     gaussian_supplier,
-    get_bernoulli_network_builder(vae_decoder_layers, n_input_dimensions),
+    get_bernoulli_network_builder(vae_decoder_layers, n_input_dimensions, output_hidden=False),
     bernoulli_supplier)
   
   vptsne = VPTSNE(
@@ -50,6 +50,8 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
     print(args)
     if np.isnan(args[2]):
       raise Exception
+    if isinstance(args[0], PTSNE) and args[2] <= 0.0:
+      raise Exception
 
   fit_params = {
     "hook_fn": hook,
@@ -57,8 +59,8 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
     "batch_size": batch_size,
     "deterministic": True,
     "fit_vae": True,
-    "n_vae_iters": 10000,
-    "vae_batch_size": 1000}
+    "n_vae_iters": 8000,
+    "vae_batch_size": np.min([indices.shape[0], 1000])}
   fit_params_2 = {
     "hook_fn": hook,
     "n_iters": 1500,
@@ -84,24 +86,22 @@ def run_training(n_latent_dimensions, perplexity, batch_size, percent_missing, r
   return vptsne_knn_score, ptsne_knn_score, vptsne_trustworthiness, ptsne_trustworthiness, vptsne2_knn_score, vptsne2_trustworthiness
 
 if __name__ == "__main__":
-  for percent_missing in [0.8, 0.9, 0.7, 0.6]:#0.5, 0.6, 0.3, 0.2, 0.7, 0.95, 0.4, 0.99]:
-    for run_id in range(5):
-      while True:
-        try:
-          res = run_training(3, 30, 200, percent_missing, run_id)
-          break
-        except:
-          pass
-      with open("missing_data_output_5/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[0]) + "\n")
-      with open("missing_data_output_5/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[1]) + "\n")
-      with open("missing_data_output_5/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[2]) + "\n")
-      with open("missing_data_output_5/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[3]) + "\n")
-      with open("missing_data_output_5/vptsne2_subset_knn_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[4]) + "\n")
-      with open("missing_data_output_5/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
-        f.write(str(res[5]) + "\n")
+  import sys
+  percent_missing = float(sys.argv[1])
+  try:
+    res = run_training(30, 30, 200, percent_missing)
+    with open("missing_data_output/vptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[0]) + "\n")
+    with open("missing_data_output/ptsne_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[1]) + "\n")
+    with open("missing_data_output/vptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[2]) + "\n")
+    with open("missing_data_output/ptsne_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[3]) + "\n")
+    with open("missing_data_output/vptsne2_subset_knn_score_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[4]) + "\n")
+    with open("missing_data_output/vptsne2_subset_trustworthiness_%s.log" % percent_missing, "a") as f:
+      f.write(str(res[5]) + "\n")
+  except Exception as e:
+    print("Run failed with percent missing", percent_missing, e)
 

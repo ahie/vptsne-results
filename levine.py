@@ -58,9 +58,9 @@ ptsne = PTSNE(
 
 pca = PCA(n_components=2)
 umap = UMAP(n_components=2)
-tsne = TSNE(n_components=2, perplexity=10)
+tsne = TSNE(n_components=2, perplexity=400)
 
-estimators = [vptsne, ptsne, vae, pca, umap, tsne]
+estimators = [tsne, pca]#[vptsne, ptsne, vae, pca, umap, tsne]
 
 def fit_transform_fn(estimator):
   print("Running fit_transform with estimator", estimator.__class__.__name__)
