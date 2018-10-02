@@ -38,6 +38,10 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
 
   def get_logger(loss_file, trustworthiness_file, knn_file):
     def log_fn(args):
+      if np.isnan(args[2]):
+        raise Exception
+      if isinstance(args[0], PTSNE) and args[2] <= 0.0:
+        raise Exception
       if isinstance(args[0], VAE):
         return
       loss_file.write(str(args[2]) + "\n")
@@ -53,7 +57,7 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
     return log_fn
 
   fit_params = {
-    "n_iters": 2000,
+    "n_iters": 1501,
     "batch_size": batch_size,
     "fit_vae": True,
     "n_vae_iters": 10000,
@@ -74,12 +78,13 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
     f.close()
 
 if __name__ == "__main__":
-  for perplexity in [30]:
-    for n_latent_dimensions in [3, 5]:
-      for batch_size in [200, 400]:
-        for run_id in range(20):
-          run_training(n_latent_dimensions, perplexity, batch_size, run_id)
-      for batch_size in [200, 400, 800]:
-        for run_id in range(20, 40):
-          run_training(n_latent_dimensions, perplexity, batch_size, run_id)
+  import sys
+  n_latent_dimensions = 5
+  perplexity = float(sys.argv[1])
+  batch_size = int(sys.argv[2])
+  run_id = int(sys.argv[3])
+  try:
+    run_training(n_latent_dimensions, perplexity, batch_size, run_id)
+  except Exception as e:
+    print("Run failed with params", perplexity, batch_size, run_id, e)
 
