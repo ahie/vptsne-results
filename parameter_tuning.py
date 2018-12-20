@@ -79,12 +79,14 @@ def run_training(n_latent_dimensions, perplexity, batch_size, run_id):
 
 if __name__ == "__main__":
   import sys
-  n_latent_dimensions = 5
+  n_latent_dimensions = 3
   perplexity = float(sys.argv[1])
   batch_size = int(sys.argv[2])
   run_id = int(sys.argv[3])
-  try:
-    run_training(n_latent_dimensions, perplexity, batch_size, run_id)
-  except Exception as e:
-    print("Run failed with params", perplexity, batch_size, run_id, e)
+  while True:
+    try:
+      run_training(n_latent_dimensions, perplexity, batch_size, run_id)
+      break
+    except Exception as e:
+      print("Retrying run with params", perplexity, batch_size, run_id, e)
 
